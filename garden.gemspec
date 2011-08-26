@@ -8,12 +8,13 @@ Gem::Specification.new do |s|
   s.authors     = ["amoslanka"]
   s.email       = ["amoslanka@gmail.com"]
   s.homepage    = ""
-  s.summary     = %q{TODO: A utility for using different formats of seeds for your rails database.}
-  s.description = %q{TODO: Allows you to organize your seeds in different formats. Typical seeds.rb, yaml fixtures, and a variety of spreadsheet formats. }
+  s.summary     = %q{A utility for using different formats of seeds for your rails database.}
+  s.description = %q{Allows you to organize your seeds in different formats. Typical seeds.rb, yaml fixtures, and a variety of spreadsheet formats. }
 
   s.rubyforge_project = "garden"
 
   s.add_dependency 'spreadsheet'
+  # s.add_dependency 'active_record'
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
