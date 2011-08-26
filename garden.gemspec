@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.authors     = ["amoslanka"]
   s.email       = ["amoslanka@gmail.com"]
   s.homepage    = ""
-  s.summary     = %q{A utility for using different formats of seeds for your rails database.}
+  s.summary     = %q{A utility for using different seed formats in your ActiveRecord database. }
   s.description = %q{Allows you to organize your seeds in different formats. Typical seeds.rb, yaml fixtures, and a variety of spreadsheet formats. }
 
   s.rubyforge_project = "garden"
