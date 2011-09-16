@@ -21,9 +21,9 @@ module Garden
   #   # todo
   # end
   
-  def self.excel file_name_or_path
+  def self.excel file_name_or_path, options=nil
     filepath = resolve_file_path(file_name_or_path)
-    Spreadsheets::Excel.new filepath
+    Spreadsheets::Excel.new filepath, options
   end
 
   def self.resolve_file_path name_or_path

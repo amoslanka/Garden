@@ -5,7 +5,9 @@ module Garden
     class Excel
     
       def initialize filepath, options={}
-        @options = options
+        
+        @options = options.reverse_merge! :some_option => "nevermind"
+        
         open filepath
       end
     
@@ -13,17 +15,12 @@ module Garden
         puts "Planting spreadsheet: #{filepath}"
       
         @ss = Spreadsheet.open filepath
-      
-        # worksheet_names = options[:only] || (options[:worksheet] ? [options[:worksheet]] : nil) || @ss.worksheets.collect { |table| table.name }
-        # 
-        # worksheet_names.each do |name|
-        #   puts "Parsing table #{name}"
-        #   parse_table @ss.worksheets.select { |table| table.name == name }
-        # end
-      
-        @ss.worksheets.each do |table|
-          puts "Parsing table #{table.name}"
-          parse_table table
+        worksheet_names = @options[:only] || (@options[:worksheet] ? [@options[:worksheet]] : nil) || @ss.worksheets.collect { |table| table.name }
+
+        # Import the worksheets
+        worksheet_names.each do |name|
+          puts "Parsing table #{name}"
+          parse_table @ss.worksheets.find { |table| table.name == name }
         end
       
       end

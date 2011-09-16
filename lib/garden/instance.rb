@@ -43,7 +43,6 @@ module Garden
     
     include Reflection
     include Columns
-    # include Garden::Helpers::RealInstance
     
     def initialize(clazz, attributes=nil)
       @object = clazz.new
@@ -132,29 +131,6 @@ module Garden
       end
 
     end
-
-
-    # def parse_row_relationships hash#, relationships
-    #   @clazz.reflections.each_value do |r|
-    #     next unless hash.has_key?(r.name)
-    #     # Remove the value from the hash.
-    #     value = hash.delete(r.name.to_sym)
-    #     case r.macro
-    #     when :has_many 
-    #       parse_has_many(@object, r, value)
-    #     when :belongs_to 
-    #       parse_belongs_to(@object, r, value)
-    #     end
-    #   end
-    # 
-    #   # relationships.each do |r|
-    #   #   # puts "Parsing row relationship: #{hash[r.to_sym]}"
-    #   #   @object = Helpers.get_real_instance r, hash[r.to_sym]
-    #   #   hash[r.to_sym] = @object
-    #   # end
-    #   # hash
-    # end
-
 
     def parse_has_many r, value
       # puts " // Parsing #{r.name}, #{value}"
