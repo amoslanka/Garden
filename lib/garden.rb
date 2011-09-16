@@ -4,7 +4,8 @@ module Garden
 
   autoload :Excel, 'garden/spreadsheets'
   autoload :Mediators, 'garden/mediators'
-
+  autoload :Instance, 'garden/instance'
+  
   # def self.plant 
   #   # todo
   # end

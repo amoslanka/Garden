@@ -3,7 +3,8 @@ require 'spreadsheet'
 module Garden
   class Excel
     
-    def initialize filepath
+    def initialize filepath, options={}
+      @options = options
       open filepath
     end
     
@@ -11,6 +12,14 @@ module Garden
       puts "Planting spreadsheet: #{filepath}"
       
       @ss = Spreadsheet.open filepath
+      
+      # worksheet_names = options[:only] || (options[:worksheet] ? [options[:worksheet]] : nil) || @ss.worksheets.collect { |table| table.name }
+      # 
+      # worksheet_names.each do |name|
+      #   puts "Parsing table #{name}"
+      #   parse_table @ss.worksheets.select { |table| table.name == name }
+      # end
+      
       @ss.worksheets.each do |table|
         puts "Parsing table #{table.name}"
         parse_table table
@@ -37,7 +46,7 @@ module Garden
         table_mediator.create_instance parse_worksheet_row(headers, row)
       end
     end
-
+    
     def parse_worksheet_row keys, values
       h = {}
       keys.each_index do |index|
@@ -47,6 +56,5 @@ module Garden
       h
     end
     
-
   end
 end
