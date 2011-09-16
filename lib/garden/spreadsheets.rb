@@ -1,3 +1,5 @@
+require 'spreadsheet'
+
 module Garden
   class Excel
     
