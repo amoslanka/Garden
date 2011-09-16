@@ -102,7 +102,9 @@ module Garden
           puts " - Excel sheet keys: #{all_keys}"
           # puts " - Invalid attributes: #{rejected.keys}"
           # puts " - Association attributes: #{relationships}"
-          puts " - #{instance.errors}"
+          instance.errors.each do |error|
+            puts error
+          end
         end
       end
     
