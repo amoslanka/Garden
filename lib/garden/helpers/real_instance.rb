@@ -4,9 +4,6 @@ module Garden
       def get_real_instance(table, id)
         model_name = table.is_a?(ActiveRecord::Reflection::AssociationReflection) ? table.class_name : table.to_s.classify
 
-        # puts "Find #{id} from #{table_name}"
-        # puts id.class.to_s
-
         begin
           clazz = model_name.constantize
           raise "Class #{clazz.to_s} is not an ActiveRecord subclass." unless clazz.new.is_a?(ActiveRecord::Base)

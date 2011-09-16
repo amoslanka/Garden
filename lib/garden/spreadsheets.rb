@@ -5,6 +5,7 @@ module Garden
     class Excel
     
       def initialize filepath, options={}
+        options ||= {}
         
         @options = options.reverse_merge! :some_option => "nevermind"
         
@@ -15,12 +16,13 @@ module Garden
         puts "Planting spreadsheet: #{filepath}"
       
         @ss = Spreadsheet.open filepath
-        worksheet_names = @options[:only] || (@options[:worksheet] ? [@options[:worksheet]] : nil) || @ss.worksheets.collect { |table| table.name }
+        worksheet_names = @options[:only] || @options[:worksheet] || @ss.worksheets.collect { |table| table.name }
+        worksheet_names = [worksheet_names] unless worksheet_names.is_a?(Enumerable)
 
         # Import the worksheets
         worksheet_names.each do |name|
           puts "Parsing table #{name}"
-          parse_table @ss.worksheets.find { |table| table.name == name }
+          parse_table @ss.worksheets.find { |table| table.name == name.to_s }
         end
       
       end
@@ -39,8 +41,6 @@ module Garden
         # Now loop the table rows, inserting records.
         table.each do |row|
           next if row.idx == 0
-          # puts '...............'
-        
           table_mediator.create_instance parse_worksheet_row(headers, row)
         end
       end
