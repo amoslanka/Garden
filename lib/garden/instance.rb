@@ -1,4 +1,3 @@
-require 'garden/helpers/real_instance'
 
 module Garden
   class Instance
@@ -44,7 +43,7 @@ module Garden
     
     include Reflection
     include Columns
-    include Helpers::RealInstance
+    # include Garden::Helpers::RealInstance
     
     def initialize(clazz, attributes=nil)
       @object = clazz.new
@@ -177,6 +176,6 @@ module Garden
     
   end
   
-  
+  Instance.send :include, Helpers::RealInstance
   
 end

@@ -1,10 +1,12 @@
 require "garden/version"
 
 module Garden
-
-  autoload :Excel, 'garden/spreadsheets'
-  autoload :Mediators, 'garden/mediators'
-  autoload :Instance, 'garden/instance'
+  extend ActiveSupport::Autoload
+  
+  autoload :Spreadsheets
+  autoload :Mediators
+  autoload :Helpers
+  autoload :Instance
   
   # def self.plant 
   #   # todo
@@ -21,7 +23,7 @@ module Garden
   
   def self.excel file_name_or_path
     filepath = resolve_file_path(file_name_or_path)
-    Excel.new filepath
+    Spreadsheets::Excel.new filepath
   end
 
   def self.resolve_file_path name_or_path
