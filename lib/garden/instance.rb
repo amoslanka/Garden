@@ -154,7 +154,7 @@ module Garden
 
     def parse_has_many r, value
       # puts " // Parsing #{r.name}, #{value}"
-      ids = value.split(/\s*,\s*/)
+      ids = value.to_s.split(/\s*,\s*/)
       ids.each do |id|
         related_instance = get_real_instance r.class_name, id
         # puts ">> Creating a has-many relationship. #{id}, #{related_instance}"

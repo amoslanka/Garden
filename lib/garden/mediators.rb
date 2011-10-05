@@ -35,7 +35,7 @@ module Garden
         @clazz = Table.find_model_class namish
         
         if @clazz.nil? || !@clazz.new.is_a?(ActiveRecord::Base)
-          raise "Class '#{namish}' could not be parsed to an ActiveRecord subclass."
+          puts "!! Class '#{namish}' could not be parsed to an ActiveRecord subclass."
         end
         
         # Get the ActiveRecord model from the tablename.
