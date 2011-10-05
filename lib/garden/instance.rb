@@ -145,7 +145,7 @@ module Garden
 
       
       if @object.respond_to?(key.to_sym)
-        puts "Ok. #{key}"
+        # puts "Ok. #{key}"
         @object.send "#{key}=", value
         return
       end
