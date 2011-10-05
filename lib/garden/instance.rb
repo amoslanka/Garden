@@ -78,15 +78,24 @@ module Garden
 
       if @object.valid?
         @object.save!
-        puts ".Saved instance: #{@clazz} #{@object.to_param}"
+        
+        # attributes.each do |key, value|
+        #   if reflection = reflection_for(key)
+        #     value.save!
+        #   end
+        # end
+
+        
+        
+        puts ". Saved instance: #{@clazz} #{@object.to_param}"
       else
-        puts "Invalid instance."
-        puts "#{@name}:"
+        puts "! Invalid instance: #{@object.to_param}"
+        # puts "#{@name}:"
         # puts " - Valid attributes: #{attributes.keys}"
         # puts " - Excel sheet keys: #{all_keys}"
         # puts " - Invalid attributes: #{rejected.keys}"
         # puts " - Association attributes: #{relationships}"
-        puts "Attributes from excel: #{attributes}"
+        # puts "Attributes from excel: #{attributes}"
         # @object.errors.each do |error|
         #   puts "Error => #{error}: #{@object.errors.get error}"
         # end
@@ -130,6 +139,15 @@ module Garden
         end
 
         @object.send "#{key}=", value
+        
+        return
+      end
+
+      
+      if @object.respond_to?(key.to_sym)
+        puts "Ok. #{key}"
+        @object.send "#{key}=", value
+        return
       end
 
     end
