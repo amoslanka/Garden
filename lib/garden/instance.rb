@@ -104,6 +104,8 @@ module Garden
           parse_has_many(reflection, value)
         when :belongs_to 
           parse_belongs_to(reflection, value)
+        when :has_one
+          parse_has_one(reflection, value)
         end
 
         return
@@ -148,6 +150,14 @@ module Garden
       ri = get_real_instance(r, value)
       @object.attributes = { r.name.to_sym => ri }
       # puts "Parsing Belongs_To. #{@object.class} #{@object.to_param} --- #{r.name.to_sym} --- #{ri.class} #{ri.to_param}"
+    end
+    
+    def parse_has_one r, value
+      
+      # puts "Parse has one.. #{value}, #{r.name.to_sym}, #{get_real_instance(r, value)}"
+      
+      related_instance = get_real_instance(r, value)
+      @object.send("#{r.name}=".to_sym, related_instance)
     end
     
   end
