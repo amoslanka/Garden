@@ -55,37 +55,16 @@ module Garden
         map_attribute key, value
       end
       
+      
+      
+      
 
-
-#        parse_row_relationships @object, attributes#, relationships
-
-      # puts "A: #{attributes.keys}"
-
-      # rejected = {}
-      # attributes.each_key do |key|
-      #   rejected[key] = attributes.delete(key) if !@object.attributes.include?(key.to_s)# && !relationships.include?(key.to_s)
-      # end
-
-
-#        attributes.delete_if do |key, value| !@object.attributes.include?(key.to_s) end
-
-      # see https://github.com/justinfrench/formtastic/blob/master/lib/formtastic/helpers/input_helper.rb
-
-#       @object.attributes = attributes
-
-      # @object.id = rejected[:id] if rejected.key?(:id)
-
-
+      
+      
+      
+      
       if @object.valid?
         @object.save!
-        
-        # attributes.each do |key, value|
-        #   if reflection = reflection_for(key)
-        #     value.save!
-        #   end
-        # end
-
-        
         
         puts ". Saved instance: #{@clazz} #{@object.to_param}"
       else
@@ -102,9 +81,11 @@ module Garden
         puts @object.errors.to_a
         puts "."
       end
+      
     end
 
     def map_attribute(key, value)
+      return if value.nil?
 
       if reflection = reflection_for(key)
         # There is an assocation for this column.
@@ -145,7 +126,7 @@ module Garden
 
       
       if @object.respond_to?(key.to_sym)
-        # puts "Ok. #{key}"
+        # puts "Directly setting. #{key}"
         @object.send "#{key}=", value
         return
       end
@@ -176,6 +157,8 @@ module Garden
       
       related_instance = get_real_instance(r, value)
       @object.send("#{r.name}=".to_sym, related_instance)
+      
+      
     end
     
   end
