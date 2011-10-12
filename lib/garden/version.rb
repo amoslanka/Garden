@@ -1,3 +1,3 @@
 module Garden
-  VERSION = "0.0.10.pre"
+  VERSION = "0.0.11.pre"
 end
