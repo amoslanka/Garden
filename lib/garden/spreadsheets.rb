@@ -13,7 +13,10 @@ module Garden
       end
     
       def open filepath
-        puts "Planting spreadsheet: #{filepath}"
+        message = "Planting spreadsheet: #{filepath}"
+        message += " (only these worksheets: #{@options[:only].to_s})" if @options[:only]
+        message += " (worksheet #{@options[:worksheet].to_s})" if @options[:worksheet]
+        puts message
       
         @ss = Spreadsheet.open filepath
         worksheet_names = @options[:only] || @options[:worksheet] || @ss.worksheets.collect { |table| table.name }
@@ -37,6 +40,11 @@ module Garden
       
         # Get the headers. These values will be the attribute names
         headers = table_mediator.parse_headers table.first.to_a
+        
+        # Set reference column if defined. 
+        if @options.has_key?(:reference)
+          table_mediator.reference_by(@options[:reference])
+        end
       
         # Now loop the table rows, inserting records.
         table.each do |row|

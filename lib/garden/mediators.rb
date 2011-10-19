@@ -31,6 +31,7 @@ module Garden
       end
       
       def initialize namish
+        @instance_options ||= {}
         
         @clazz = Table.find_model_class namish
         
@@ -55,12 +56,12 @@ module Garden
       end
     
       def parse_headers array
-        @headers = array.map { |header| header.to_s.parameterize.underscore }
-        # @relationships = []
-        # 
-        # @headers.each do |header|
-        #   @relationships.push header if @clazz.reflections.keys.include?(header.to_sym)
-        # end
+        # @headers = array.map { |header| header.to_s.parameterize.underscore }
+        @headers = array.map { |header| header.to_s.underscore }
+      end
+      
+      def reference_by col_name
+        @instance_options[:reference] = col_name
       end
       
       # def relationships
@@ -68,7 +69,7 @@ module Garden
       # end
       # 
       def create_instance attributes
-        Instance.new @clazz, attributes
+        Instance.new @clazz, attributes, @instance_options.dup
       end
 
 

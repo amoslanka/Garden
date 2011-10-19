@@ -44,29 +44,40 @@ module Garden
     include Reflection
     include Columns
     
-    def initialize(clazz, attributes=nil)
-      @object = clazz.new
+    def initialize(clazz, attributes=nil, options={})
+      @options = options.dup
+      
+      if @options.has_key? :reference
+        @reference_column = @options.delete(:reference).to_sym
+        @reference = attributes.delete @reference_column
+        @object = clazz.send "find_by_#{@reference_column}".to_sym, @reference
+        
+        unless @object
+          puts "Unable to find referenced instance using column '#{@reference_column}' and value '#{@reference}'"
+          return
+        end
+      else
+        @object = clazz.new
+      end
+      
       assign_attributes attributes if attributes
     end
     
     def assign_attributes(attributes)
       
       attributes.each do |key, value|
+        # puts "assign attribute: #{key}, #{value}"
         map_attribute key, value
       end
-      
-      
-      
-      
-
-      
-      
-      
       
       if @object.valid?
         @object.save!
         
-        puts ". Saved instance: #{@clazz} #{@object.to_param}"
+        if @reference.nil?
+          puts ". Saved new instance: #{@clazz} #{@object.to_param}"
+        else
+          puts ". Saved existing instance: #{@clazz} #{@object.to_param}"
+        end
       else
         puts "! Invalid instance: #{@object.to_param}"
         # puts "#{@name}:"
@@ -86,6 +97,8 @@ module Garden
 
     def map_attribute(key, value)
       return if value.nil?
+      
+      # puts "map_attribute: #{key} >> #{value}"
 
       if reflection = reflection_for(key)
         # There is an assocation for this column.
@@ -124,8 +137,22 @@ module Garden
         return
       end
 
+      if key.to_s =~ /\./
+        # Dealing with something like an interpolatable value. A property of an associated model.
+        # puts "Interpolated association value!!" + " >> " + "@object.#{key} = #{value}"
+        # puts "Assignment via eval"
+        # puts "@object.#{key} = '#{value.gsub(/[']/, '\\\\\'')}'"
+        assoc = key.to_s.split('.').first
+        if @object.send(assoc.to_sym).nil?
+          # build the association if it hasn't already been built.
+          @object.send("build_#{assoc}".to_sym)
+        end
+        eval "@object.#{key} = '#{value.gsub(/[']/, '\\\\\'')}'"
+        return
+      end
       
       if @object.respond_to?(key.to_sym)
+        # puts "Assignment via respond_to?"
         # puts "Directly setting. #{key}"
         @object.send "#{key}=", value
         return
