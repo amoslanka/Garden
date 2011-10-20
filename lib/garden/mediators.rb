@@ -57,7 +57,7 @@ module Garden
     
       def parse_headers array
         # @headers = array.map { |header| header.to_s.parameterize.underscore }
-        @headers = array.map { |header| header.to_s.underscore }
+        @headers = array.map { |header| header.to_s.strip.gsub(/ /, '-').underscore }
       end
       
       def reference_by col_name

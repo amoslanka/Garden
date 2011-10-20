@@ -37,7 +37,9 @@ module Garden
     module Columns
       # Get a column object for a specified attribute method - if possible.
       def column_for(method) #:nodoc:
-        @object.column_for_attribute(method) if @object.respond_to?(:column_for_attribute)
+        # puts "Get column for #{method}"
+        # puts "Found" if @object.respond_to?(:column_for_attribute) && @object.column_for_attribute(method)
+        @object.column_for_attribute(method.to_s.strip) if @object.respond_to?(:column_for_attribute)
       end
     end
     
@@ -99,6 +101,7 @@ module Garden
       return if value.nil?
       
       # puts "map_attribute: #{key} >> #{value}"
+      
 
       if reflection = reflection_for(key)
         # There is an assocation for this column.
@@ -116,14 +119,16 @@ module Garden
       end
 
       if column = column_for(key)
+        
+        # puts "Found column #{key}"
 
         case column.type
 
         # Special cases where the column type doesn't map to an input method.
         when :string
-
+          value = value.to_s
         when :integer
-
+          value = value.to_i
         when :float, :decimal
 
         when :timestamp
