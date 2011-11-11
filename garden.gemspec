@@ -14,7 +14,6 @@ Gem::Specification.new do |s|
   s.rubyforge_project = "garden"
 
   s.add_dependency 'spreadsheet'
-  # s.add_dependency 'active_record'
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")

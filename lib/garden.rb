@@ -22,12 +22,14 @@ module Garden
   # end
   
   def self.excel file_name_or_path, options=nil
-    filepath = resolve_file_path(file_name_or_path)
+    filepath = File.exists?(file_name_or_path) ? file_name_or_path : File.join(Rails.root, "db/seeds/#{file_name_or_path}.xls")
     Spreadsheets::Excel.new filepath, options
   end
 
-  def self.resolve_file_path name_or_path
-    File.exists?(name_or_path) ? name_or_path : File.join(Rails.root, "db/seeds/#{name_or_path}.xls")
+  def self.csv file_name_or_path, options=nil
+    filepath = File.exists?(file_name_or_path) ? file_name_or_path : File.join(Rails.root, "db/seeds/#{file_name_or_path}.csv")
+    Spreadsheets::CSV.new filepath, options
   end
+
 
 end

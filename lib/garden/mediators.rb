@@ -47,7 +47,7 @@ module Garden
         #   puts " ** Could not derive ActiveRecord model from the provided name: #{namish}. Exception: #{e.message}"
         # end
         
-        @instance = @clazz.new
+        # @instance = @clazz.new
         
       end
       
@@ -55,10 +55,10 @@ module Garden
         @clazz != nil
       end
     
-      def parse_headers array
-        # @headers = array.map { |header| header.to_s.parameterize.underscore }
-        @headers = array.map { |header| header.to_s.strip.gsub(/ /, '-').underscore }
-      end
+      # def parse_headers array
+      #   # @headers = array.map { |header| header.to_s.parameterize.underscore }
+      #   @headers = array.map { |header| header.to_s.strip.gsub(/ /, '-').underscore }
+      # end
       
       def reference_by col_name
         @instance_options[:reference] = col_name
@@ -68,10 +68,9 @@ module Garden
       #   @relationships
       # end
       # 
-      def create_instance attributes
+      def row attributes
         Instance.new @clazz, attributes, @instance_options.dup
       end
-
 
       def class_exists?(name)
         begin
