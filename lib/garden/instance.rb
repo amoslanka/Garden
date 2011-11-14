@@ -177,18 +177,20 @@ module Garden
       end
     end
 
-    def parse_belongs_to r, value
-      ri = get_real_instance(r, value)
-      @object.attributes = { r.name.to_sym => ri }
+    def parse_belongs_to association, value
+      parse_has_one association, value
+      # related_instance = get_real_instance(association, value)
+      # @object.send("#{association.name}=".to_sym, related_instance)
+      # @object.attributes = { association.name.to_sym => related_instance }
       # puts "Parsing Belongs_To. #{@object.class} #{@object.to_param} --- #{r.name.to_sym} --- #{ri.class} #{ri.to_param}"
     end
     
-    def parse_has_one r, value
+    def parse_has_one association, value
       
-      # puts "Parse has one.. #{value}, #{r.name.to_sym}, #{get_real_instance(r, value)}"
+      # puts "Parse has one.. #{value}, #{association.name.to_sym}, #{get_real_instance(association, value)}"
       
-      related_instance = get_real_instance(r, value)
-      @object.send("#{r.name}=".to_sym, related_instance)
+      related_instance = get_real_instance(association, value)
+      @object.send("#{association.name}=".to_sym, related_instance)
       
       
     end
