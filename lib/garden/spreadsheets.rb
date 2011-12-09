@@ -15,7 +15,10 @@ module Garden
       end
       
       def build_mediator name
-        @mediator = Mediators::Table.new name
+        validation = @options[:validate]
+        validation = true if validation.nil?
+        
+        @mediator = Mediators::Table.new name, :validate => validation
         raise "Invalid mediator for table #{name}" unless @mediator.valid?
         @mediator.reference_by(@options[:reference]) if @options.has_key?(:reference)
         @mediator
@@ -50,12 +53,12 @@ module Garden
         # Expects the first row to be the headers.
         headers = rows.shift.map { |header| header.to_s.strip.gsub(/ /, '-').underscore }
         rows.each do |row|
-          attributes = parse_worksheet_row(headers, row)
+          attributes = parse_worksheet_attributes(headers, row)
           @mediator.row attributes
         end
       end
       
-      def parse_worksheet_row keys, values
+      def parse_worksheet_attributes keys, values
         h = {}
         keys.each_index do |index|
           key = keys[index].to_sym

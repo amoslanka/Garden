@@ -1,0 +1,26 @@
+A utility for using different seed formats in your ActiveRecord database.
+
+In process. Currently supports:
+
+Excel spreadsheet format:
+
+Garden.excel 'spreadsheetname'
+
+CSV spreadsheet format:
+
+Garden.csv 'spreadsheetname'
+
+Common options:
+
+:reference >> The column name to use as a reference for updating values.
+
+:validate >> [Boolean][default=true] >> Whether to perform validations on ActiveRecord::Base instances
+
+:only >> (Excel only) whitelist the worksheet names to seed
+:worksheet >> (Excel only) whitelist the single worksheet name to seed
+
+:table >> (CSV only) the table name to seed into (defaults to an interpretation based on the csv filename)
+
+
+
+

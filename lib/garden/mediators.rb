@@ -30,8 +30,8 @@ module Garden
         clazz
       end
       
-      def initialize namish
-        @instance_options ||= {}
+      def initialize namish, options={}
+        @instance_options = options.reverse_merge!({:validate => true})
         
         @clazz = Table.find_model_class namish
         
@@ -62,6 +62,13 @@ module Garden
       
       def reference_by col_name
         @instance_options[:reference] = col_name
+      end
+      
+      def validate=(val)
+        @instance_options[:validate] = val
+      end
+      def validate
+        @instance_options[:validate]
       end
       
       # def relationships

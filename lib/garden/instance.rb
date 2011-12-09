@@ -72,16 +72,14 @@ module Garden
         map_attribute key, value
       end
       
-      if @object.valid?
-        @object.save!
-        
+      if @object.save(:validate => @options[:validate])
         if @reference.nil?
           puts ". Saved new instance: #{@clazz} #{@object.to_param}"
         else
           puts ". Saved existing instance: #{@clazz} #{@object.to_param}"
         end
       else
-        puts "! Invalid instance: #{@object.to_param}"
+        puts "! Instance was not saved: #{@object.to_param}"
         # puts "#{@name}:"
         # puts " - Valid attributes: #{attributes.keys}"
         # puts " - Excel sheet keys: #{all_keys}"
@@ -91,7 +89,9 @@ module Garden
         # @object.errors.each do |error|
         #   puts "Error => #{error}: #{@object.errors.get error}"
         # end
-        puts @object.errors.to_a
+        if @object.errors.any?
+          puts @object.errors.to_a 
+        end
         puts "."
       end
       
@@ -152,7 +152,7 @@ module Garden
           # build the association if it hasn't already been built.
           @object.send("build_#{assoc}".to_sym)
         end
-        eval "@object.#{key} = '#{value.gsub(/[']/, '\\\\\'')}'"
+        eval "@object.#{key} = '#{value.to_s.gsub(/[']/, '\\\\\'')}'"
         return
       end
       
