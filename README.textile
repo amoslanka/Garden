@@ -21,6 +21,12 @@ Common options:
 
 :table >> (CSV only) the table name to seed into (defaults to an interpretation based on the csv filename)
 
-
+Callbacks:
+  Callbacks allow for methods and actions to be injected in the process of the seeding of data. The most common callbacks are those
+  that will be called on each instance that is created by the seed process.
+  
+  :before_validation
+    If option is a method or Proc instance, it will be called with the record as the first argument.
+    If option is a symbol, Garden expects it refers to the name of a method for that instance and will call it on the record.
 
 

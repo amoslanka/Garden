@@ -6,6 +6,7 @@ module Garden
   autoload :Spreadsheets
   autoload :Mediators
   autoload :Helpers
+  autoload :Models
   autoload :Instance
   
   # def self.plant 

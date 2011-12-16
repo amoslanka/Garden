@@ -47,8 +47,9 @@ module Garden
     include Columns
     
     def initialize(clazz, attributes=nil, options={})
-      @options = options.dup
-      
+      @options = options.dup.symbolize_keys
+      # initialize_callbacks
+
       if @options.has_key? :reference
         @reference_column = @options.delete(:reference).to_sym
         @reference = attributes.delete @reference_column
@@ -65,12 +66,25 @@ module Garden
       assign_attributes attributes if attributes
     end
     
+    # def initialize_callbacks
+    #   for name in active_record_callbacks do
+    #     
+    #     
+    #     
+    #   end
+    #   
+    #   @callbacks = {}
+    #   @callbacks[:before_validation] = @options.delete(:before_validation) if @options.has_key?(:before_validation)
+    # end
+    
     def assign_attributes(attributes)
       
       attributes.each do |key, value|
         # puts "assign attribute: #{key}, #{value}"
         map_attribute key, value
       end
+      
+      # execute_callback(:before_validation)
       
       if @object.save(:validate => @options[:validate])
         if @reference.nil?
@@ -194,6 +208,34 @@ module Garden
       
       
     end
+    
+    # def execute_callback name
+    #   name = name.to_sym
+    #   callback = @callbacks[name]
+    #   
+    #   if callback
+    #     
+    #     if active_record_callbacks.include?(name)
+    #       # Execute a callback by applying it to the ActiveRecord model.
+    #       
+    #     else
+    #       
+    #     end
+    #     
+    #     # puts "Executing callback: #{name}, #{callback}, #{callback.class}"
+    #     case callback
+    #     when Proc, Method then callback.call(@object)
+    #     when Symbol, String then record.send(callback.to_sym)
+    #     end
+    #   end
+    # end
+    # 
+    # private
+    
+    # def _execute_active_record_callback name, callback
+    #   
+    # end
+    
     
   end
   

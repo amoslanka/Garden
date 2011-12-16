@@ -7,7 +7,8 @@ module Garden
     class AbstractSpreadsheet
       def initialize filepath, options={}
         options ||= {}
-        @options = options.reverse_merge! :some_option => "nevermind"
+        # @options = options.reverse_merge! {}
+        @options = options
         open filepath
       end
     
@@ -18,7 +19,9 @@ module Garden
         validation = @options[:validate]
         validation = true if validation.nil?
         
-        @mediator = Mediators::Table.new name, :validate => validation
+        @options[:validate] = true if @options[:validate].nil?
+        
+        @mediator = Mediators::Table.new name, @options#:validate => validation
         raise "Invalid mediator for table #{name}" unless @mediator.valid?
         @mediator.reference_by(@options[:reference]) if @options.has_key?(:reference)
         @mediator
@@ -36,7 +39,7 @@ module Garden
         
         excel_spreadsheet = ::Spreadsheet.open filepath
       
-        worksheet_names = @options[:only] || @options[:worksheet] || excel_spreadsheet.worksheets.collect { |table| table.name }
+        worksheet_names = @options.delete(:only) || @options.delete(:worksheet) || excel_spreadsheet.worksheets.collect { |table| table.name }
         worksheet_names = [worksheet_names] unless worksheet_names.is_a?(Enumerable)
 
         # Import the worksheets
